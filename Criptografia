@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+	int n,c,i,x,tamanho,vet;
+	char texto[1001], texto2[1001];
+	scanf("%d",&n); // Quantidade de frases que serão encriptadas (Até 1000 caracteres cada)
+	for(i=1;i<=n;i++)
+	{
+		fflush(stdin);
+		gets(texto);
+		tamanho=strlen(texto);
+		for (vet = 0; vet < tamanho; vet++) // Criptografa a string adicionando +3 na tabela ASCII
+		{
+			if (texto[vet]>64 && texto[vet]<127)
+			texto[vet]=texto[vet]+3;
+		}
+		for ( x = tamanho-1, c=0; x >= 0; x--, c++) // Inverte a string
+ 		{
+        	texto2[c]=texto[x];
+   		}
+   		for ( x = 0; x < tamanho/2; x++) // Printa metade da string
+ 		{
+        	printf ("%c",texto2[x]);
+   		}
+   		for ( x = tamanho/2; x < tamanho; x++) // Printa a outra metade adicionando -1 aos caracteres
+ 		{
+        	printf ("%c",texto2[x]-1);
+   		}
+   		printf("\n");
+	}
+	return 0;
+}
