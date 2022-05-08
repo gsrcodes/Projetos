@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define TF 100
+
+int main(void)
+{
+    float deposito, saque, soma, porcentagem, saldo[TF];
+    int conta[TF], verificador, aux, num, TL = 0, resp;
+    char nome[TF][30];
+
+    while (resp != 7)
+    {
+        system("cls");
+        printf("Insira:\n1 - Cadastrar nova conta\n2 - Realizar deposito\n3 - Realizar Saque\n4 - Consultar conta\n5 - Consultar ativo bancario\n6 - Aplicar juros mensais\n7 - Finalizar programa\n");
+        scanf("%d", &resp);
+        if (resp < 1 || resp > 7)
+        {
+            system("cls");
+            printf("Resposta invalida!\n");
+            _sleep(3000);
+        }
+
+        if (resp == 1)
+        {
+            system("cls");
+            printf("Numero da conta:\n");
+            while (verificador != TL)
+            {
+                scanf("%d", &num);
+                for (verificador = 0, aux = 0; aux < TL && num != conta[aux]; aux++)
+                    verificador++;
+                if (verificador != TL)
+                    printf("Conta ja cadastrada! Insira outra:\n");
+                if (num < 0)
+                {
+                    printf("Numero de conta invalido. Insira outro:\n");
+                    verificador = TL - 1;
+                }
+            }
+            conta[TL] = num;
+            printf("Nome completo:\n");
+            fflush(stdin);
+            gets(nome[TL]);
+            printf("Saldo:\n");
+            scanf("%f", &saldo[TL]);
+            TL++;
+        }
+        
+        if (resp > 1 && resp < 5)
+        {
+            if (TL == 0)
+            {
+                system("cls");
+                printf("Ainda nao ha contas cadastradas!\n");
+                _sleep(3000);
+            }
+            else
+            {
+                system("cls");
+                printf("Conta: \n");
+                scanf("%d", &num);
+                verificador = TL;
+                while (verificador == TL)
+                {
+                    for (verificador = 0, aux = 0; aux < TL && num != conta[aux]; aux++)
+                        verificador++;
+                    if (verificador == TL)
+                    {
+                        printf("Conta nao existente. Insira outra:\n");
+                        scanf("%d", &num);
+                    }
+                }
+
+                if (resp == 2)
+                {
+                    system("cls");
+                    printf("Valor do deposito:\n");
+                    scanf("%f", &deposito);
+                    while (deposito < 0)
+                    {
+                        printf("Valor de deposito negativo! Insira outro valor:\n");
+                        scanf("%f", &deposito);
+                    }
+                    saldo[verificador] += deposito;
+                }
+
+                if (resp == 3)
+                {
+                    system("cls");
+                    printf("Saldo disponivel: R$%.2f\n", saldo[verificador]);
+                    printf("Valor de saque:\n");
+                    scanf("%f", &saque);
+                    while (saque < 0)
+                    {
+                        printf("Valor de saque negativo! Insira outro valor:\n");
+                        scanf("%f", &saque);
+                    }
+                    while (saque > saldo[verificador])
+                    {
+                        printf("Saque maior que o disponivel. Insira outro valor:\n");
+                        scanf("%f", &saque);
+                    }
+                    saldo[verificador] -= saque;
+                    printf("Saque realizado com sucesso!\nNovo saldo: R$%.2f\n", saldo[verificador]);
+                }
+
+                if (resp == 4)
+                {
+                    system("cls");
+                    printf("Conta: %d\n", conta[verificador]);
+                    printf("Nome Completo: %s\n", nome[verificador]);
+                    printf("Saldo: R$%.2f\n", saldo[verificador]);
+                    _sleep(5000);
+                }
+            }
+        }
+        if (resp == 5)
+        {
+            system("cls");
+            for (soma = 0, aux = 0; aux < TL; aux++)
+                soma += saldo[aux];
+            printf("Ativo bancario: R$%.2f\n", soma);
+            _sleep(5000);
+        }
+
+        if (resp == 6)
+        {
+            if (TL == 0)
+            {
+                system("cls");
+                printf("Ainda nao ha contas cadastradas!\n");
+                _sleep(5000);
+            }
+            else
+            {
+                system("cls");
+                printf("Porcentagem de juros a ser aplicada:\n");
+                scanf("%f", &porcentagem);
+                for (aux = 0; aux < TL; aux++)
+                {
+                    saldo[aux] = saldo[aux] * porcentagem / 100 + saldo[aux];
+                    soma += saldo[aux];
+                }
+                system("cls");
+                printf("Novo ativo bancario: R$%.2f\n", soma);
+                _sleep(5000);
+            }
+        }
+    }
+}
